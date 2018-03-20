@@ -11,7 +11,7 @@ import Control.Monad.Aff.Compat (EffFnAff(..), fromEffFnAff)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Class (liftEff)
 
-type Query = { text :: String
+type HistoryQuery = { text :: String
              , startTime :: Milliseconds
              , endTime :: Milliseconds
              , maxResults :: Int
@@ -36,21 +36,21 @@ type RangeT = { statrtTime :: Milliseconds
               , endTime :: Milliseconds
               }
 
-defaultQuery :: forall eff. String -> Eff (time :: TIME | eff) Query
+defaultQuery :: forall eff. String -> Eff (time :: TIME | eff) HistoryQuery
 defaultQuery text = now >>= \endTime -> pure { text : text
                                              , startTime : Milliseconds 0.0
                                              , endTime : endTime
                                              , maxResults : 100
                                              }
 
-foreign import _search :: forall eff. Query -> EffFnAff (chrome :: CHROME | eff) (Array HistoryItem)
+foreign import _search :: forall eff. HistoryQuery -> EffFnAff (chrome :: CHROME | eff) (Array HistoryItem)
 foreign import _visits :: forall eff. URL -> EffFnAff (chrome :: CHROME | eff) (Array VisitItem)
 foreign import _addUrl :: forall eff. URL -> EffFnAff (chrome :: CHROME | eff) Unit
 foreign import _deleteUrl :: forall eff. URL -> EffFnAff (chrome :: CHROME | eff) Unit
 foreign import _deleteRange :: forall eff. Number -> Number -> EffFnAff (chrome :: CHROME | eff) Unit
 foreign import _deleteAll :: forall eff. EffFnAff (chrome :: CHROME | eff) Unit
 
-search :: forall eff. Query -> Aff (chrome :: CHROME , time :: TIME | eff) (Array HistoryItem)
+search :: forall eff. HistoryQuery -> Aff (chrome :: CHROME , time :: TIME | eff) (Array HistoryItem)
 search = fromEffFnAff <<< _search
 
 searchText :: forall eff. String -> Aff (chrome :: CHROME , time :: TIME | eff) (Array HistoryItem)

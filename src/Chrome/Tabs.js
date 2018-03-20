@@ -37,10 +37,17 @@ exports._getCurrent = function (just, nothing) {
     }
 }
 
-exports._getAllInWindow = function(windowId) {
+exports._query = function(query) {
     return function (onError, onSuccess) {
-        if (typeof chrome.tabs.getAllInWindow == "function") {
-            chrome.tabs.getAllInWindow(windowId, function (tabItems) {
+        if (typeof chrome.tabs.query == "function") {
+            var queryObj = {}
+            var queryProps = query.map(function(prop) {
+                return camelCase(prop.__proto__.constructor.name)
+            })
+            queryProps.forEach(function(key, index) {
+                queryObj[key] = query[index].value0
+            })
+            chrome.tabs.query (queryObj, function (tabItems) {
                 onSuccess(tabItems)
             })
         } else {
@@ -50,4 +57,8 @@ exports._getAllInWindow = function(windowId) {
             cancelerSuccess()
         }
     }
+}
+
+function camelCase (val) {
+    return val[0].toLowerCase() + val.slice(1);
 }
