@@ -1,0 +1,22 @@
+{
+  "name": "purescript-chrome",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-psc": "pulp -w build",
+    "start-webpack": "webpack --watch --progress",
+    "start": "pulp -w --then \"webpack-dev-server --content-base dist/\" build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "webpack": "3.11.0",
+    "webpack-dev-server": "2.9.7"
+  }
+}
