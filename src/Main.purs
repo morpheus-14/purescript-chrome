@@ -4,7 +4,7 @@ import Prelude
 
 import Chrome.Core (CHROME)
 import Chrome.History (search, searchText)
-import Chrome.Tabs (get, getAllInWindow, getCurrent, getWithIndex, getAllInCurrentWindow)
+import Chrome.Tabs (get, getAllInWindow, getCurrent, getWithIndex, getAllInCurrentWindow, runMyQuery)
 import Chrome.Utils (TIME, now)
 import Control.Applicative (pure)
 import Control.Monad.Aff (Aff, launchAff_, liftEff', runAff)
@@ -21,11 +21,10 @@ main = launchAff_ do
   liftEff now >>= logShow
   -- history <- searchText ""
   -- log $ fromMaybe "heyyylo" (head ((\h -> h.url) <$> history))
-  currTab <- get 2
+  testTabs <- runMyQuery { windowId : 1 }
   allTabs <- getAllInWindow 1
   myTab <- getWithIndex 10
   allCurrentTabs <- getAllInCurrentWindow
-  log (unsafePartial $ (fromJust currTab).url)
-  log (unsafePartial $ (unsafeIndex allCurrentTabs 10).url)
+  log (unsafePartial $ (unsafeIndex testTabs 3).url)
   log (unsafePartial $ (fromJust myTab).url)
   pure unit

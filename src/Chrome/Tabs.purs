@@ -6,6 +6,8 @@ import Chrome.Core (CHROME)
 import Chrome.Types (URL)
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Compat (EffFnAff, fromEffFnAff)
+import Control.Monad.Aff.Console (CONSOLE)
+import Control.Monad.Eff (Eff)
 import Data.Array (head, singleton, (:))
 import Data.Function.Uncurried (Fn2, Fn3, runFn2, runFn3)
 import Data.Maybe (Maybe(..))
@@ -48,9 +50,12 @@ type Tab = { id :: Int
            , sessionId :: String
            }
 
+type TabQ a = { | a }
+
 foreign import _get :: forall a eff. Fn3 (a -> Maybe a) (Maybe a) Int (EffFnAff (chrome :: CHROME | eff) (Maybe Tab))
 foreign import _getCurrent :: forall a eff. Fn2 (a -> Maybe a) (Maybe a) (EffFnAff (chrome :: CHROME | eff) (Maybe Tab))
 foreign import _query :: forall eff. TabQuery -> EffFnAff (chrome :: CHROME | eff) (Array Tab)
+foreign import _qr :: forall a eff. TabQ a -> EffFnAff (chrome :: CHROME | eff) (Array Tab)
 
 get :: forall eff. Int -> Aff (chrome :: CHROME | eff) (Maybe Tab)
 get = fromEffFnAff <<< runFn3 _get Just Nothing
@@ -60,6 +65,9 @@ getCurrent = fromEffFnAff $ runFn2 _getCurrent Just Nothing
 
 query :: forall eff. TabQuery -> Aff (chrome :: CHROME | eff) (Array Tab)
 query = fromEffFnAff <<< _query
+
+qr :: forall a eff. TabQ a -> Aff (chrome :: CHROME | eff) (Array Tab)
+qr = fromEffFnAff <<< _qr
 
 getAllInWindow :: forall eff. Int -> Aff (chrome :: CHROME | eff) (Array Tab)
 getAllInWindow id = query $ singleton $ WindowId id
@@ -75,3 +83,6 @@ getWithUrl url = query $ singleton $ Url url
 
 getAllInCurrentWindow :: forall eff. Aff (chrome:: CHROME | eff) (Array Tab)
 getAllInCurrentWindow = query $ singleton $ CurrentWindow true
+
+runMyQuery :: forall a eff. TabQ a -> Aff (chrome :: CHROME | eff) (Array Tab)
+runMyQuery q = qr q

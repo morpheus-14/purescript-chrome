@@ -40,6 +40,7 @@ exports._getCurrent = function (just, nothing) {
 exports._query = function(query) {
     return function (onError, onSuccess) {
         if (typeof chrome.tabs.query == "function") {
+            //convert sum type to query object
             var queryObj = {}
             var queryProps = query.map(function(prop) {
                 return camelCase(prop.__proto__.constructor.name)
@@ -59,6 +60,28 @@ exports._query = function(query) {
     }
 }
 
+exports._qr = function(query) {
+    return function (onError, onSuccess) {
+        if (typeof chrome.tabs.query == "function") {
+            console.log(query)
+            chrome.tabs.query (query, function (tabItems) {
+                onSuccess(tabItems)
+            })
+        } else {
+            onError("function doesn't exist")
+        }
+        return function (cancelError, cancelerError, cancelerSuccess) {
+            cancelerSuccess()
+        }
+    }
+}
+
 function camelCase (val) {
     return val[0].toLowerCase() + val.slice(1);
+}
+
+exports.test = function (val) {
+    return function () {
+        return console.log(val)
+    }
 }
