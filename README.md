@@ -34,6 +34,8 @@ module Main where
 
 import Prelude
 import Chrome.Tabs (getTab)
+import Data.Maybe
+import Effect.Class.Console
 import Effect.Aff (launchAff_)
 
 main :: Effect Unit
