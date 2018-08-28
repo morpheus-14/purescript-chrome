@@ -51,11 +51,11 @@ foreign import _get :: forall a. Fn3 (a -> Maybe a) (Maybe a) Int (EffectFnAff (
 foreign import _getCurrent :: forall a. Fn2 (a -> Maybe a) (Maybe a) (EffectFnAff (Maybe Tab))
 foreign import _query :: TabQuery -> EffectFnAff (Array Tab)
 
-get :: Int -> Aff (Maybe Tab)
-get = fromEffectFnAff <<< runFn3 _get Just Nothing
+getTab :: Int -> Aff (Maybe Tab)
+getTab = fromEffectFnAff <<< runFn3 _get Just Nothing
 
-getCurrent :: Aff (Maybe Tab)
-getCurrent = fromEffectFnAff $ runFn2 _getCurrent Just Nothing
+getCurrentTab :: Aff (Maybe Tab)
+getCurrentTab = fromEffectFnAff $ runFn2 _getCurrent Just Nothing
 
 query :: TabQuery -> Aff (Array Tab)
 query = fromEffectFnAff <<< _query
