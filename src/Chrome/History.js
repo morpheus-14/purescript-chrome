@@ -1,4 +1,3 @@
-
 exports._search = function(query) {
     return function (onError, onSuccess) {
         if (typeof chrome.history.search == "function") {

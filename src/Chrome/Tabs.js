@@ -1,4 +1,3 @@
-
 exports._get = function(just, nothing, tabId) {
     return function (onError, onSuccess) {
         if (typeof chrome.tabs.get == "function") {
