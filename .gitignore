@@ -1,12 +1,23 @@
-/bower_components/
-/node_modules/
-/.pulp-cache/
-/output/
-/generated-docs/
-/.psc-package/
-/.psc*
-/.purs*
-/.psa*
-/dist/index_bundle.js
-/dist/index_bundle.js.map
+# Bower
+bower_components/
+
+# Purescript/Pulp
+.pulp-cache/
+output/
+.psc-package/
+.psc*
+.purs*
+.psa*
+generated-docs/
+
+# Output files
+dist/index_bundle.js
+dist/index_bundle.js.map
+
+# Node
+node_modules/
 package-lock.json
+
+# Mac
+.DS_Store/
+.DS_Store
