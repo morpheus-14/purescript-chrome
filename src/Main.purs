@@ -2,7 +2,7 @@ module Main where
 
 import Prelude
 
-import Chrome.History (search, searchText)
+import Chrome.History (search, searchText, defaultQuery)
 import Chrome.Tabs (get, getAllInWindow, getCurrent, getWithIndex, getAllInCurrentWindow)
 import Chrome.Utils (now)
 import Control.Applicative (pure)
@@ -24,7 +24,8 @@ main = launchAff_ do
   allTabs <- getAllInWindow 1
   myTab <- getWithIndex 10
   allCurrentTabs <- getAllInCurrentWindow
+  pursHistory <- searchText "purescript"
   liftEffect $ log (unsafePartial $ (fromJust currTab).url)
-  liftEffect $ log (unsafePartial $ (unsafeIndex allCurrentTabs 10).url)
-  liftEffect $ log (unsafePartial $ (fromJust myTab).url)
+  liftEffect $ logShow $ (\tab -> tab.url) <$> allCurrentTabs
+  liftEffect $ logShow $ (\entry -> entry.title) <$> pursHistory
   pure unit

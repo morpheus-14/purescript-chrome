@@ -11,6 +11,8 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "history"
-  ]
+    "history",
+    "management"
+  ],
+  "background": { "scripts": ["hot-reload.js"] }
 }
